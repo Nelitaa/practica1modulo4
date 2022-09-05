@@ -1,0 +1,25 @@
+{
+  "name": "practica1modulo4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --inspect -r dotenv/config index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nelitaa/practica1modulo4.git"
+  },
+  "author": "MarianelaMG",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nelitaa/practica1modulo4/issues"
+  },
+  "homepage": "https://github.com/Nelitaa/practica1modulo4#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1"
+  }
+}
