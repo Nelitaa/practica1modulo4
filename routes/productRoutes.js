@@ -6,6 +6,6 @@ productRouter
     .route("/")
     .get(productController.getAllProducts)
     .post(productController.addProduct);
-productRouter.route("/:id").get(productController.getProductById);
+productRouter.route("/:id").get(productController.getProductById).put(productController.editProduct);
 
 module.exports = productRouter;

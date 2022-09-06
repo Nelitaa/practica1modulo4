@@ -44,3 +44,28 @@ exports.getProductById = (req, res) => {
         status: "not found",  
     });   
 }
+
+exports.editProduct = (req, res) => {
+    const products = JSON.parse(fs.readFileSync(`${__dirname}/../data/products.json`)
+);
+const { id } = req.params;
+const updatedProduct = req.body; 
+
+const foundProduct = products.find(p => p.id == id);
+    if(foundProduct){
+        const newProducts =  products.map( (product) => (product.id==id) ?  updatedProduct : product);
+        fs.writeFileSync(`${__dirname}/../data/products.json`, JSON.stringify(newProducts));
+        return res.status(200).json({
+            status: "success",
+            data: {
+                product: updatedProduct,
+            },
+        });     
+    } 
+    res.status(404).json({
+        status: "not found",  
+    });   
+}
+
+//delete un producto
+//modificar un producto
