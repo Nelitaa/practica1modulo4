@@ -31,6 +31,24 @@ res.status(200).json({
     });
 })
 
+app.get("/api/v1/products/:id", (req, res) => {
+    const products = JSON.parse(fs.readFileSync(`${__dirname}/data/products.json`)
+);
+
+    const foundProduct = products.find(p => p.id == req.params.id);
+    if(foundProduct){
+        return res.status(200).json({
+            status: "success",
+            data: {
+                product: foundProduct,
+            },
+        });     
+    } 
+    res.status(404).json({
+        status: "not found",  
+    });   
+});
+
 app.listen(port, () => {
     console.log(`App running on port ${port}`);
 });
