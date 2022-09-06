@@ -26,7 +26,7 @@ const getAllProducts = (req, res) => {
     });
 }
 
-const addProducts = (req, res) => {
+const addProduct = (req, res) => {
     const products = JSON.parse(fs.readFileSync(`${__dirname}/data/products.json`)
 );
 products.push(req.body);
@@ -56,10 +56,11 @@ const getProductById = (req, res) => {
         status: "not found",  
     });   
 }
+const productRouter = express.Router();
+app.use("/api/v1/products", productRouter);
 
-app.get("/api/v1/products", getAllProducts);
-app.post("/api/v1/products", addProducts);
-app.get("/api/v1/products/:id", getProductById);
+productRouter.route("/").get(getAllProducts).post(addProduct);
+productRouter.route("/:id").get(getProductById);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}`);
