@@ -67,5 +67,22 @@ const foundProduct = products.find(p => p.id == id);
     });   
 }
 
-//delete un producto
-//modificar un producto
+exports.deleteProduct = (req, res) => {
+    const products = JSON.parse(fs.readFileSync(`${__dirname}/../data/products.json`)
+);
+const { id } = req.params;
+const foundProduct = products.find(p => p.id == id);
+    if(foundProduct){
+        const newProducts =  products.filter( (product) => (product.id != id));
+        fs.writeFileSync(`${__dirname}/../data/products.json`, JSON.stringify(newProducts));
+        return res.status(200).json({
+            status: "success",
+            data: {
+                product: foundProduct,
+            },
+        });     
+    } 
+    res.status(404).json({
+        status: "not found",  
+    });   
+}
