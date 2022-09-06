@@ -2,10 +2,10 @@ const express = require("express");
 const fs = require("fs");
 const app = express();
 app.use(express.json());
+
 const port = process.env.PORT;
 
-
-app.get("/api/v1/products", (req, res) => {
+const getAllProducts = (req, res) => {
     const products = JSON.parse(fs.readFileSync(`${__dirname}/data/products.json`)
 );
         
@@ -16,9 +16,9 @@ app.get("/api/v1/products", (req, res) => {
             products,
         },
     });
-})
+}
 
-app.post("/api/v1/products", (req, res) => {
+const addProducts = (req, res) => {
     const products = JSON.parse(fs.readFileSync(`${__dirname}/data/products.json`)
 );
 products.push(req.body);
@@ -29,9 +29,9 @@ res.status(200).json({
             products,
         },
     });
-})
+}
 
-app.get("/api/v1/products/:id", (req, res) => {
+const getProductById = (req, res) => {
     const products = JSON.parse(fs.readFileSync(`${__dirname}/data/products.json`)
 );
 
@@ -47,7 +47,11 @@ app.get("/api/v1/products/:id", (req, res) => {
     res.status(404).json({
         status: "not found",  
     });   
-});
+}
+
+app.get("/api/v1/products", getAllProducts);
+app.post("/api/v1/products", addProducts);
+app.get("/api/v1/products/:id", getProductById);
 
 app.listen(port, () => {
     console.log(`App running on port ${port}`);
