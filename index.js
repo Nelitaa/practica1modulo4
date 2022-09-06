@@ -1,16 +1,22 @@
 const express = require("express");
 const fs = require("fs");
 const app = express();
+
 app.use(express.json());
+app.use((req, res, next) => {
+    req.requestTime = new Date().toISOString();
+    next();
+})
 
 const port = process.env.PORT;
 
 const getAllProducts = (req, res) => {
     const products = JSON.parse(fs.readFileSync(`${__dirname}/data/products.json`)
 );
-        
+    console.log(req.requestTime);    
     res.status(200).json({
         status: "success",
+        timeOfRequest: req.requestTime,
         results: products.length,
         data: {
             products,
