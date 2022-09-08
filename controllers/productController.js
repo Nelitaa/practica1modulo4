@@ -9,7 +9,7 @@ exports.getAllProducts = (req, res) => {
         timeOfRequest: req.requestTime,
         results: products.length,
         data: {
-            products,
+            product: products,
         },
     });
 }
@@ -17,12 +17,12 @@ exports.getAllProducts = (req, res) => {
 exports.addProduct = (req, res) => {
     const products = JSON.parse(fs.readFileSync(`${__dirname}/../data/products.json`)
 );
-products.push(req.body);
+const newProduct = products.push(req.body);
 fs.writeFileSync(`${__dirname}/../data/products.json`, JSON.stringify(products));
 res.status(200).json({
     status: "success",
         data: {
-            products,
+            product: newProduct,
         },
     });
 }
@@ -44,41 +44,15 @@ exports.getProductById = (req, res) => {
         status: "not found",  
     });   
 }
-
-exports.editProduct = (req, res) => {
-    const products = JSON.parse(fs.readFileSync(`${__dirname}/../data/products.json`)
-);
-const { id } = req.params;
-const updatedProduct = req.body; 
-
-const foundProduct = products.find(p => p.id == id);
+exports.editProduct = async (req, res) => {
+    const updatedProduct = req.body; 
+    const foundProduct = await Product.findById(req.params.id);
     if(foundProduct){
-        const newProducts =  products.map( (product) => (product.id==id) ?  updatedProduct : product);
-        fs.writeFileSync(`${__dirname}/../data/products.json`, JSON.stringify(newProducts));
-        return res.status(200).json({
+        const newProducts =  Product.map( (Product) => (Product.id==req.params.id) ?  updatedProduct : Product);
+        res.status(200).json({
             status: "success",
             data: {
                 product: updatedProduct,
-            },
-        });     
-    } 
-    res.status(404).json({
-        status: "not found",  
-    });   
-}
-
-exports.deleteProduct = (req, res) => {
-    const products = JSON.parse(fs.readFileSync(`${__dirname}/../data/products.json`)
-);
-const { id } = req.params;
-const foundProduct = products.find(p => p.id == id);
-    if(foundProduct){
-        const newProducts =  products.filter( (product) => (product.id != id));
-        fs.writeFileSync(`${__dirname}/../data/products.json`, JSON.stringify(newProducts));
-        return res.status(200).json({
-            status: "success",
-            data: {
-                product: foundProduct,
             },
         });     
     } 
