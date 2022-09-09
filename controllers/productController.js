@@ -1,9 +1,8 @@
 const fs = require("fs");
+const models = require("../models");
 
-exports.getAllProducts = (req, res) => {
-    const products = JSON.parse(fs.readFileSync(`${__dirname}/../data/products.json`)
-);
-    console.log(req.requestTime);    
+exports.getAllProducts = async (req, res) => {
+   const products = await models.Product.findAll();
     res.status(200).json({
         status: "success",
         timeOfRequest: req.requestTime,
@@ -12,28 +11,23 @@ exports.getAllProducts = (req, res) => {
             products,
         },
     });
-}
+};
 
-exports.addProduct = (req, res) => {
-    const products = JSON.parse(fs.readFileSync(`${__dirname}/../data/products.json`)
-);
-products.push(req.body);
-fs.writeFileSync(`${__dirname}/../data/products.json`, JSON.stringify(products));
-res.status(200).json({
-    status: "success",
-        data: {
-            products,
-        },
-    });
-}
+exports.addProduct = async (req, res) => {
+    let newProduct = models.Product.build(req.body);
+    newProduct = await newProduct.save();
+    res.status(200).json({
+        status: "success",
+            data: {
+                product: newProduct,
+            },
+        });
+};
 
-exports.getProductById = (req, res) => {
-    const products = JSON.parse(fs.readFileSync(`${__dirname}/../data/products.json`)
-);
-
-    const foundProduct = products.find(p => p.id == req.params.id);
+exports.getProductById = async (req, res) => {
+    const foundProduct = await models.Product.findByPk(req.params.id);
     if(foundProduct){
-        return res.status(200).json({
+        res.status(200).json({
             status: "success",
             data: {
                 product: foundProduct,
