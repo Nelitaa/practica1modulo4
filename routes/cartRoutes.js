@@ -9,8 +9,8 @@ cartRouter
     .post(cartController.addProductCart);
 
 cartRouter
-    .route("/:id")
+    .route("/:productId")
     .all(authController.protect)
-    //.delete(cartController.deleteProductCart);
+    .delete(cartController.deleteProductCart);
     
 module.exports = cartRouter;
