@@ -39,6 +39,7 @@ exports.getProductById = catchAsync(async (req, res) => {
          }); 
     }  
 });
+
 exports.editProduct = catchAsync(async (req, res) => {
     const updatedProduct = req.body; 
     const foundProduct = await Product.findById(req.params.id);
@@ -58,6 +59,7 @@ exports.editProduct = catchAsync(async (req, res) => {
          });
     }   
 });
+
 exports.deleteProduct = catchAsync(async (req, res) => {
     const foundProduct = await Product.findById(req.params.id);
     if(foundProduct){

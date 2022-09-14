@@ -1,5 +1,6 @@
 const mongoose =require("mongoose");
 process.on("uncaughtException", (err) => {
+    console.log(err);
     console.log("uncaughtException");
     console.log("Shutting dow");
     process.exit(1);
