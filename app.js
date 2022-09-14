@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const productRouter = require("./routes/productRoutes");
 const userRouter = require("./routes/userRoutes");
 const authRouter = require("./routes/authRoutes");
+const cartRouter = require("./routes/cartRoutes");
 const MyError = require("./utils/MyError");
 const app = express();
 
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
 app.use("/api/v1/products/", productRouter);
 app.use("/api/v1/users/", userRouter);
 app.use("/api/v1/auth/", authRouter);
+app.use("/api/v1/cart/", cartRouter);
 
 app.all("*", (req, res ,next) => {
    next(new MyError("route not found", 404));
