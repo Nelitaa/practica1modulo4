@@ -6,11 +6,11 @@ const cartRouter = express.Router();
 cartRouter
     .route("/")
     .all(authController.protect)
-    .post(cartController.addProduct);
+    .post(cartController.addProductCart);
 
 cartRouter
     .route("/:id")
     .all(authController.protect)
-    .delete(cartController.deleteProduct);
+    //.delete(cartController.deleteProductCart);
     
 module.exports = cartRouter;
