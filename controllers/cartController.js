@@ -66,7 +66,6 @@ exports.deleteProductCart = catchAsync(async (req, res) => {
               });
         }
         const product = await Product.findById(req.params.productId);
-        console.log(req.params.productId);
         if(!product){
             return res.status(404).json({
                 status: "not found",
@@ -101,3 +100,35 @@ exports.deleteProductCart = catchAsync(async (req, res) => {
               });
         }
     });
+exports.payCart = catchAsync(async (req, res) => {
+    if (!req.user){
+        return res.status(404).json({
+            status: "User not found",
+            });
+    }
+    let currentCart = await Cart.findOne({
+        user: req.user._id,
+        status: 'PENDING'
+
+    })
+    if(currentCart){
+        if (currentCart.products.length>0) {
+            currentCart.status="PAID";
+            const cart = await currentCart.save();               
+            res.status(200).json({
+            status: "success",
+                data: {
+                    cart: cart,
+                },
+            });
+        } else {
+            res.status(404).json({
+                status: "cart empty",
+                });
+        };
+    }else{
+        res.status(404).json({
+            status: "Cart not found",
+            });
+    }
+});
